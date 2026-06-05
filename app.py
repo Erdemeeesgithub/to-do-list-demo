@@ -4,10 +4,6 @@ from heap import MinHeap
 app = Flask(__name__)
 heap = MinHeap()
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route('/static/<path:filename>')
 def static_files(filename):
     return send_from_directory('.', filename)
