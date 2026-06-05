@@ -34,7 +34,7 @@
         opacity: 0.15;
       }
       .hero h1 {
-        font-size: 52px;
+        font-size: clamp(28px, 8vw, 52px);
         font-weight: 400;
         color: #d5b893;
         letter-spacing: 6px;
@@ -44,7 +44,7 @@
         animation: fadeUp 1s ease forwards 0.3s;
       }
       .hero p {
-        font-size: 14px;
+        font-size: clamp(11px, 2.5vw, 14px);
         color: #617891;
         letter-spacing: 3px;
         text-transform: uppercase;
@@ -69,25 +69,25 @@
         animation: bounce 1.5s infinite;
       }
 
-      /* main content */
+      /* main */
       .container {
         max-width: 620px;
         margin: 0 auto;
-        padding: 60px 20px;
+        padding: 60px 16px;
       }
       .section-title {
         font-size: 11px;
         letter-spacing: 3px;
         text-transform: uppercase;
         color: #617891;
-        margin-bottom: 24px;
+        margin-bottom: 16px;
       }
       .card {
         background: #1e2d42;
         border: 1px solid #617891;
         border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 20px;
+        padding: 16px;
+        margin-bottom: 16px;
         opacity: 0;
         transform: translateY(40px);
         transition: opacity 0.6s ease, transform 0.6s ease;
@@ -105,7 +105,8 @@
       input,
       select {
         flex: 1;
-        min-width: 120px;
+        min-width: 0;
+        width: 100%;
         padding: 10px 14px;
         background: #25344f;
         border: 1px solid #617891;
@@ -124,7 +125,9 @@
         background: #25344f;
         color: #d5b893;
       }
+
       button {
+        width: 100%;
         padding: 10px 18px;
         background: #d5b893;
         border: none;
@@ -139,6 +142,17 @@
       }
       button:hover {
         background: #c4a57e;
+      }
+
+      /* on bigger screens, add button doesn't need full width */
+      @media (min-width: 480px) {
+        button.add-btn {
+          width: auto;
+        }
+        input,
+        select {
+          width: auto;
+        }
       }
 
       .heap-raw {
@@ -188,11 +202,12 @@
         background: #25344f;
         border: 1px solid #617891;
         border-radius: 10px;
-        padding: 12px 16px;
+        padding: 12px 14px;
         margin-bottom: 8px;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 8px;
+        flex-wrap: wrap;
         opacity: 0;
         transform: translateX(-20px);
         animation: slideIn 0.4s ease forwards;
@@ -202,6 +217,7 @@
       }
       .task-name {
         flex: 1;
+        min-width: 100px;
         font-size: 14px;
         color: #d5b893;
       }
@@ -212,6 +228,7 @@
         font-weight: 600;
         letter-spacing: 0.5px;
         text-transform: uppercase;
+        white-space: nowrap;
       }
       .badge.high {
         background: #632024;
@@ -229,7 +246,9 @@
       .task-date {
         font-size: 12px;
         color: #617891;
+        white-space: nowrap;
       }
+
       .popped {
         background: #1e2d42;
         border: 1px solid #617891;
@@ -243,13 +262,16 @@
       .popped strong {
         color: #d5b893;
       }
+
       .top-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 12px;
+        gap: 8px;
       }
       .pop-btn {
+        width: auto !important;
         padding: 8px 14px;
         background: transparent;
         border: 1px solid #617891;
@@ -257,6 +279,7 @@
         font-size: 13px;
         border-radius: 8px;
         transition: all 0.2s;
+        white-space: nowrap;
       }
       .pop-btn:hover {
         border-color: #d5b893;
@@ -294,7 +317,7 @@
   <body>
     <div class="hero">
       <h1>Task Manager</h1>
-      <p>priority queue — heap powered</p>
+      <p>by Erdemdelgerekh</p>
       <div class="scroll-hint">
         scroll down
         <span>↓</span>
@@ -312,7 +335,7 @@
             <option value="3">Low</option>
           </select>
           <input type="date" id="deadline" />
-          <button onclick="addTask()">+ Add</button>
+          <button class="add-btn" onclick="addTask()">+ Add</button>
         </div>
       </div>
 
