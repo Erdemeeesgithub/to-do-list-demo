@@ -3,45 +3,132 @@
   <head>
     <title>Task Manager</title>
     <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
       body {
-        font-family: sans-serif;
-        max-width: 600px;
-        margin: 40px auto;
-        padding: 0 20px;
-        background: #f9f9f9;
+        font-family: "Georgia", serif;
+        background: #25344f;
+        min-height: 100vh;
+        padding: 40px 20px;
+      }
+      .container {
+        max-width: 620px;
+        margin: 0 auto;
       }
       h1 {
-        font-size: 22px;
-        font-weight: 500;
+        font-size: 28px;
+        font-weight: 400;
+        color: #d5b893;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .subtitle {
+        font-size: 13px;
+        color: #617891;
+        letter-spacing: 1px;
+        margin-bottom: 32px;
+      }
+      .card {
+        background: #1e2d42;
+        border: 1px solid #617891;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
       }
       .row {
         display: flex;
         gap: 8px;
-        margin-bottom: 16px;
         flex-wrap: wrap;
       }
       input,
       select {
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 14px;
         flex: 1;
+        min-width: 120px;
+        padding: 10px 14px;
+        background: #25344f;
+        border: 1px solid #617891;
+        border-radius: 8px;
+        color: #d5b893;
+        font-size: 14px;
+        font-family: "Georgia", serif;
+      }
+      input::placeholder {
+        color: #617891;
+      }
+      input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(0.5);
+      }
+      select option {
+        background: #25344f;
+        color: #d5b893;
       }
       button {
-        padding: 8px 16px;
-        border: 1px solid #ddd;
+        padding: 10px 18px;
+        background: #d5b893;
+        border: none;
         border-radius: 8px;
-        background: white;
-        cursor: pointer;
+        color: #25344f;
         font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "Georgia", serif;
+        letter-spacing: 0.5px;
       }
       button:hover {
-        background: #f0f0f0;
+        background: #c4a57e;
+      }
+      .section-label {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #617891;
+        margin-bottom: 12px;
+      }
+      .heap-raw {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .heap-item {
+        text-align: center;
+      }
+      .node {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .node.high {
+        background: #632024;
+        color: #f5c4c4;
+        border: 1px solid #8a3035;
+      }
+      .node.medium {
+        background: #6f4d38;
+        color: #d5b893;
+        border: 1px solid #8a6245;
+      }
+      .node.low {
+        background: #25344f;
+        color: #617891;
+        border: 1px solid #617891;
+      }
+      .index {
+        font-size: 10px;
+        color: #617891;
+        margin-top: 3px;
       }
       .task {
-        background: white;
-        border: 1px solid #eee;
+        background: #25344f;
+        border: 1px solid #617891;
         border-radius: 10px;
         padding: 12px 16px;
         margin-bottom: 8px;
@@ -50,103 +137,117 @@
         gap: 12px;
       }
       .task.top {
-        border: 1.5px solid #1d9e75;
+        border-color: #d5b893;
       }
-      .badge {
-        font-size: 12px;
-        padding: 3px 10px;
-        border-radius: 6px;
-        font-weight: 500;
-      }
-      .high {
-        background: #fcebeb;
-        color: #a32d2d;
-      }
-      .medium {
-        background: #faeeda;
-        color: #854f0b;
-      }
-      .low {
-        background: #eaf3de;
-        color: #3b6d11;
-      }
-      .name {
+      .task-name {
         flex: 1;
         font-size: 14px;
-        font-weight: 500;
+        color: #d5b893;
       }
-      .date {
-        font-size: 12px;
-        color: #888;
-      }
-      .heap-raw {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-        margin-bottom: 16px;
-      }
-      .node {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .badge {
         font-size: 11px;
-        font-weight: 500;
-        border: 1px solid #ddd;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      .badge.high {
+        background: #632024;
+        color: #f5c4c4;
+      }
+      .badge.medium {
+        background: #6f4d38;
+        color: #d5b893;
+      }
+      .badge.low {
+        background: #1e2d42;
+        color: #617891;
+        border: 1px solid #617891;
+      }
+      .task-date {
+        font-size: 12px;
+        color: #617891;
       }
       .popped {
-        background: #f0f0f0;
+        background: #1e2d42;
+        border: 1px solid #617891;
         border-radius: 8px;
-        padding: 8px 12px;
+        padding: 10px 14px;
         font-size: 13px;
-        color: #555;
+        color: #617891;
         margin-bottom: 12px;
       }
-      label {
+      .popped strong {
+        color: #d5b893;
+      }
+      .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .pop-btn {
+        padding: 8px 14px;
+        background: transparent;
+        border: 1px solid #617891;
+        color: #617891;
         font-size: 13px;
-        color: #888;
-        margin-bottom: 4px;
-        display: block;
+        border-radius: 8px;
+      }
+      .pop-btn:hover {
+        border-color: #d5b893;
+        color: #d5b893;
+        background: transparent;
+      }
+      .arrow {
+        color: #d5b893;
+        font-size: 16px;
       }
     </style>
   </head>
   <body>
-    <h1>Task Manager</h1>
+    <div class="container">
+      <h1>Task Manager</h1>
+      <p class="subtitle">priority queue — heap powered</p>
 
-    <div class="row">
-      <input type="text" id="taskName" placeholder="Task name..." />
-      <select id="priority">
-        <option value="1">High</option>
-        <option value="2" selected>Medium</option>
-        <option value="3">Low</option>
-      </select>
-      <input type="date" id="deadline" />
-      <button onclick="addTask()">+ Add</button>
+      <div class="card">
+        <div class="row">
+          <input type="text" id="taskName" placeholder="Task name..." />
+          <select id="priority">
+            <option value="1">High</option>
+            <option value="2" selected>Medium</option>
+            <option value="3">Low</option>
+          </select>
+          <input type="date" id="deadline" />
+          <button onclick="addTask()">+ Add</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Heap array (raw list)</div>
+        <div class="heap-raw" id="heapRaw">
+          <span style="font-size: 13px; color: #617891">empty</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top-row">
+          <div class="section-label" style="margin: 0">
+            Tasks — priority order
+          </div>
+          <button class="pop-btn" onclick="popTask()">↑ Pop next</button>
+        </div>
+        <div id="poppedMsg"></div>
+        <div id="taskList">
+          <div style="font-size: 13px; color: #617891">no tasks yet</div>
+        </div>
+      </div>
     </div>
-
-    <label>Heap array (raw list)</label>
-    <div class="heap-raw" id="heapRaw"></div>
-
-    <div
-      style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 8px;
-      "
-    >
-      <label style="margin: 0">Tasks (priority order)</label>
-      <button onclick="popTask()">↑ Pop next</button>
-    </div>
-    <div id="poppedMsg"></div>
-    <div id="taskList"></div>
 
     <script>
       const priorityLabel = { 1: "high", 2: "medium", 3: "low" };
       const priorityShort = { 1: "H", 2: "M", 3: "L" };
-      const priorityColor = { 1: "high", 2: "medium", 3: "low" };
 
       async function addTask() {
         const name = document.getElementById("taskName").value.trim();
@@ -183,14 +284,15 @@
           heap
             .map(
               (t, i) =>
-                `<div style="text-align:center">
-          <div class="node ${priorityColor[t.priority]}">${
+                `<div class="heap-item">
+          <div class="node ${priorityLabel[t.priority]}">${
                   priorityShort[t.priority]
                 }</div>
-          <div style="font-size:10px;color:#aaa">[${i}]</div>
+          <div class="index">[${i}]</div>
         </div>`
             )
-            .join("") || '<span style="font-size:13px;color:#aaa">empty</span>';
+            .join("") ||
+          '<span style="font-size:13px;color:#617891">empty</span>';
 
         const sorted = [...heap].sort((a, b) => a.priority - b.priority);
         document.getElementById("taskList").innerHTML =
@@ -198,16 +300,20 @@
             .map(
               (t, i) =>
                 `<div class="task ${i === 0 ? "top" : ""}">
-          ${i === 0 ? "→" : '<span style="width:12px"></span>'}
-          <span class="name">${t.name}</span>
-          <span class="badge ${priorityColor[t.priority]}">${
+          ${
+            i === 0
+              ? '<span class="arrow">→</span>'
+              : '<span style="width:16px;display:inline-block"></span>'
+          }
+          <span class="task-name">${t.name}</span>
+          <span class="badge ${priorityLabel[t.priority]}">${
                   priorityLabel[t.priority]
                 }</span>
-          ${t.deadline ? `<span class="date">${t.deadline}</span>` : ""}
+          ${t.deadline ? `<span class="task-date">${t.deadline}</span>` : ""}
         </div>`
             )
             .join("") ||
-          '<div style="font-size:13px;color:#aaa">no tasks yet</div>';
+          '<div style="font-size:13px;color:#617891">no tasks yet</div>';
       }
 
       render([]);
