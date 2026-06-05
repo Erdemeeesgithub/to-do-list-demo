@@ -4,9 +4,9 @@ from heap import MinHeap
 app = Flask(__name__)
 heap = MinHeap()
 
-@app.route('/static/<path:filename>')
-def static_files(filename):
-    return send_from_directory('.', filename)
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/add', methods=['POST'])
 def add_task():
