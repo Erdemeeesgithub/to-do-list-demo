@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from heap import MinHeap
 
 app = Flask(__name__)
@@ -7,6 +7,10 @@ heap = MinHeap()
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory('.', filename)
 
 @app.route('/add', methods=['POST'])
 def add_task():
